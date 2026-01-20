@@ -18,11 +18,14 @@ function App({ offers, reviews }: AppProps): JSX.Element {
       <Routes>
         <Route path="/" element={<MainPage offers={offers} />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/favorites" element={
-          <PrivateRoute>
-            <FavoritesPage offers={offers} />
-          </PrivateRoute>
-        } />
+        <Route
+          path="/favorites"
+          element={
+            <PrivateRoute>
+              <FavoritesPage offers={offers} />
+            </PrivateRoute>
+          }
+        />
         <Route path="/offer/:id" element={<OfferPage offers={offers} reviews={reviews} />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
