@@ -1,10 +1,12 @@
-import { useParams, Link, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useParams, Link } from 'react-router-dom';
 import { Review } from '../../types';
-import { offers as mockOffers } from '../../mocks/offers';
 import ReviewForm from '../../components/review-form/review-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
+import { RootState } from '../../store';
+import NotFoundPage from '../not-found-page/not-found-page';
 
 interface OfferPageProps {
   reviews: Review[];
@@ -12,12 +14,14 @@ interface OfferPageProps {
 
 function OfferPage({ reviews }: OfferPageProps): JSX.Element {
   const { id } = useParams<{ id: string }>();
-  const currentOffer = mockOffers.find((o) => o.id === id) ?? mockOffers[0];
-  const nearbyOffers = mockOffers.filter((o) => o.id !== currentOffer?.id).slice(0, 3);
+  const offers = useSelector((state: RootState) => state.offers);
+  const currentOffer = offers.find((o) => o.id === id) ?? offers[0];
+  const nearbyOffers = offers.filter((o) => o.id !== currentOffer?.id).slice(0, 3);
 
   if (!currentOffer) {
-    return <Navigate to="/404" />;
+    return <NotFoundPage />;
   }
+  const images = Array.isArray(currentOffer.images) ? currentOffer.images : [];
 
   return (
     <div className="page">
@@ -54,7 +58,7 @@ function OfferPage({ reviews }: OfferPageProps): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {currentOffer.images.map((image) => (
+              {images.slice(0, 6).map((image) => (
                 <div key={image} className="offer__image-wrapper">
                   <img className="offer__image" src={image} alt="Photo studio" />
                 </div>
@@ -104,7 +108,7 @@ function OfferPage({ reviews }: OfferPageProps): JSX.Element {
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {currentOffer.goods.map((good) => (
+                  {(currentOffer.goods ?? []).map((good) => (
                     <li key={good} className="offer__inside-item">
                       {good}
                     </li>

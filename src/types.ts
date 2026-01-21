@@ -36,7 +36,7 @@ export type Offer = {
   description: string;
   goods: string[];
   host: Host;
-  images: string[];
+  images?: string[];
 };
 
 export type Review = {
