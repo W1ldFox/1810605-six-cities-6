@@ -30,7 +30,7 @@ function useMap(
       setMap(instance);
       isRenderedRef.current = true;
     }
-  }, [mapRef]);
+  }, [mapRef, city.location.latitude, city.location.longitude]);
 
   useEffect(() => {
     if (map) {
@@ -42,7 +42,7 @@ function useMap(
         map.getZoom()
       );
     }
-  }, [map, city]);
+  }, [map, city.location.latitude, city.location.longitude]);
 
   return map;
 }

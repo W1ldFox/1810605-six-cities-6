@@ -9,6 +9,8 @@ export type SortType =
 export const ActionType = {
   ChangeCity: 'city/change',
   LoadOffers: 'offers/load',
+  SetOffersLoading: 'offers/loading',
+  SetOffersLoadError: 'offers/load-error',
   ChangeSortType: 'sort/change',
   SetActiveOfferId: 'offer/active'
 } as const;
@@ -21,6 +23,16 @@ export const changeCity = (city: City) => ({
 export const loadOffers = (offers: Offer[]) => ({
   type: ActionType.LoadOffers,
   payload: offers
+} as const);
+
+export const setOffersLoading = (isLoading: boolean) => ({
+  type: ActionType.SetOffersLoading,
+  payload: isLoading
+} as const);
+
+export const setOffersLoadError = (hasError: boolean) => ({
+  type: ActionType.SetOffersLoadError,
+  payload: hasError
 } as const);
 
 export const changeSortType = (sortType: SortType) => ({
@@ -36,5 +48,7 @@ export const setActiveOfferId = (offerId: string | null) => ({
 export type Action =
   | ReturnType<typeof changeCity>
   | ReturnType<typeof loadOffers>
+  | ReturnType<typeof setOffersLoading>
+  | ReturnType<typeof setOffersLoadError>
   | ReturnType<typeof changeSortType>
   | ReturnType<typeof setActiveOfferId>;

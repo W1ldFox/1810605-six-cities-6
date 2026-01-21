@@ -55,6 +55,9 @@ function MainPage(): JSX.Element {
     }
   })();
   const placesCount = sortedOffers.length;
+  const isDev = import.meta.env.DEV;
+  const isOffersLoading = useSelector((state: RootState) => state.isOffersLoading);
+  const isOffersLoadError = useSelector((state: RootState) => state.isOffersLoadError);
 
   const handleCityChange = (city: City) => {
     dispatch(changeCity(city));
@@ -101,6 +104,13 @@ function MainPage(): JSX.Element {
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
+        {isDev && (
+          <div className="container" style={{ paddingTop: '10px' }}>
+            <small>
+              isOffersLoading: {String(isOffersLoading)} | isOffersLoadError: {String(isOffersLoadError)} | offers: {offers.length}
+            </small>
+          </div>
+        )}
         <div className="tabs">
           <section className="locations container">
             <CitiesList

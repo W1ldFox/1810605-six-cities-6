@@ -1,11 +1,10 @@
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types';
+import { RootState } from '../../store';
 
-interface FavoritesPageProps {
-  offers: Offer[];
-}
-
-function FavoritesPage({ offers }: FavoritesPageProps): JSX.Element {
+function FavoritesPage(): JSX.Element {
+  const offers = useSelector((state: RootState) => state.offers);
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
 
   // Группируем по городам

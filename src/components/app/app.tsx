@@ -1,18 +1,33 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import MainPage from '../../pages/main-page/main-page';
 import LoginPage from '../../pages/login-page/login-page';
 import FavoritesPage from '../../pages/favorites-page/favorites-page';
 import OfferPage from '../../pages/offer-page/offer-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
-import { Offer, Review } from '../../types';
+import Spinner from '../spinner/spinner';
+import ErrorMessage from '../error-message/error-message';
+import { Review } from '../../types';
+import { RootState } from '../../store';
+import { fetchOffersAction } from '../../store/api-actions';
 
 interface AppProps {
-  offers: Offer[];
   reviews: Review[];
 }
 
-function App({ offers, reviews }: AppProps): JSX.Element {
+function App({ reviews }: AppProps): JSX.Element {
+  const dispatch = useDispatch();
+  const isOffersLoading = useSelector((state: RootState) => state.isOffersLoading);
+  const isOffersLoadError = useSelector((state: RootState) => state.isOffersLoadError);
+
+  if (isOffersLoading) {
+    return <Spinner />;
+  }
+  if (isOffersLoadError) {
+    return <ErrorMessage onRetry={() => dispatch(fetchOffersAction())} />;
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -22,7 +37,7 @@ function App({ offers, reviews }: AppProps): JSX.Element {
           path="/favorites"
           element={
             <PrivateRoute>
-              <FavoritesPage offers={offers} />
+              <FavoritesPage />
             </PrivateRoute>
           }
         />
