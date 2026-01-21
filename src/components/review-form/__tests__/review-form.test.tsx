@@ -34,7 +34,7 @@ const makeStore = () =>
         activeOfferId: null
       },
       user: {
-        authorizationStatus: 'NO_AUTH',
+        authorizationStatus: AuthorizationStatus.NoAuth,
         user: null
       },
       offer: {
